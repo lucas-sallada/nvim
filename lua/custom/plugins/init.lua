@@ -37,5 +37,6 @@ return {
   },
   "windwp/nvim-ts-autotag",
   "sindrets/diffview.nvim",
-  "HiPhish/rainbow-delimiters.nvim"
+  "HiPhish/rainbow-delimiters.nvim",
+  { "zbirenbaum/copilot.lua" }
 }
