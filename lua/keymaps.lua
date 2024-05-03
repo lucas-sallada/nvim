@@ -15,7 +15,6 @@ vim.keymap.set("v", ">", ">gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -33,4 +32,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+-- [[ Open neovim config ]]
+vim.keymap.set('n', '<leader>oc', function()
+  vim.cmd('edit $MYVIMRC')
+end, { desc = 'Open neovim config' })
 -- vim: ts=2 sts=2 sw=2 et

@@ -53,4 +53,6 @@ vim.o.wrap = false
 
 vim.cmd.colorscheme "catppuccin-frappe"
 
+vim.o.colorcolumn = "80"
+
 -- vim: ts=2 sts=2 sw=2 et

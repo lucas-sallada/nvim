@@ -51,6 +51,9 @@ end
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
+--
+local lspconfig = require('lspconfig')
+
 local servers = {
   clangd = {},
   -- gopls = {},
@@ -60,7 +63,7 @@ local servers = {
     documentFormatting = false
   },
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  angularls = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -83,6 +86,14 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
+local _border = "single"
+
+-- LSP settings (for overriding per client)
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = _border }),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = _border }),
+}
+
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
@@ -90,11 +101,10 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
+      handlers = handlers,
     }
   end
 }
-
-local lspconfig = require('lspconfig')
 
 lspconfig.cucumber_language_server.setup {
     settings = {
@@ -107,13 +117,23 @@ lspconfig.cucumber_language_server.setup {
     on_attach = on_attach,
 }
 
-lspconfig.eslint.setup({
-  on_attach = function(_, bufnr)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        command = "EslintFixAll",
-      })
-    end,
-})
+local cmd = {
+    'ngserver',
+    '--stdio',
+    '--tsProbeLocations',
+    '/Users/DKS0662774/.local/share/nvim/mason/packages/angular-language-server/node_modules/@angular/language-server/node_modules,/Users/DKS0662774/workspace/dcsg-ngx-ecommerce/node_modules',
+    '--ngProbeLocations',
+    '/Users/DKS0662774/.local/share/nvim/mason/packages/angular-language-server/node_modules/@angular/language-server/node_modules,/Users/DKS0662774/workspace/dcsg-ngx-ecommerce/node_modules'
+}
+
+lspconfig.angularls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern("angular.json", "project.json"),
+    cmd = cmd,
+    on_new_config = function(new_config, new_root_dir)
+      new_config.cmd = cmd
+    end
+}
 
 -- vim: ts=2 sts=2 sw=2 et

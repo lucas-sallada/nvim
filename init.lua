@@ -51,6 +51,7 @@ vim.keymap.set("n", "<C-1>", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<C-2>", function() ui.nav_file(2) end)
 vim.keymap.set("n", "<C-3>", function() ui.nav_file(3) end)
 vim.keymap.set("n", "<C-4>", function() ui.nav_file(4) end)
+vim.keymap.set('n', '<leader>od', ':DBUIToggle<CR>', { desc = '[O]pen [D]atabase UI', silent = true })
 
 local highlight = {
     "RainbowRed",
@@ -76,15 +77,32 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
 end)
 
 vim.g.rainbow_delimiters = { highlight = highlight }
-require("ibl").setup { indent = { highlight = highlight } }
-
-hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+require("ibl").setup { }
 
 require("copilot").setup({
   suggestion = {
     enabled = true,
     auto_trigger = true,
     debounce = 75,
+  },
+})
+
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false, -- add a border to hover docs and signature help
   },
 })
 

@@ -5,7 +5,8 @@ return {
 	config = function()
 		require("catppuccin").setup({
 			flavour = "frappe",    -- latte, frappe, macchiato, mocha
-			transparent_background = true, -- disables setting the background color.
+			transparent_background = true,
+			show_end_of_buffer = false
 		})
 	end,
 	init = function()
