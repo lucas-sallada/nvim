@@ -11,8 +11,15 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("nvim-tree").setup {}
+      require("nvim-tree").setup {
+        view = {
+          width = 60,
+        }
+      }
     end,
+    opts = function()
+      return require("custom.configs.nvim-tree")
+    end
   },
   { "ThePrimeagen/harpoon", opts = {
       menu = {
@@ -25,12 +32,6 @@ return {
   "kristijanhusak/vim-dadbod-ui",
   { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' } },
   {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function()
      return require "custom.configs.null-ls"
@@ -42,28 +43,8 @@ return {
     opts = {}
   },
   "windwp/nvim-ts-autotag",
-  "sindrets/diffview.nvim",
   "HiPhish/rainbow-delimiters.nvim",
   { "zbirenbaum/copilot.lua" },
-  {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    config = true
-  },
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-    }
-  },
   {
       'cameron-wags/rainbow_csv.nvim',
       config = true,
@@ -82,5 +63,42 @@ return {
           'RainbowDelimQuoted',
           'RainbowMultiDelim'
       }
-  }
+  },
+  {
+    "craftzdog/solarized-osaka.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = function()
+      return {
+        transparent = true,
+      }
+    end,
+  },
+  {
+    "b0o/incline.nvim",
+    dependencies = { "craftzdog/solarized-osaka.nvim" },
+    event = "BufReadPre",
+    priority = 1200,
+    config = function()
+      local colors = require("solarized-osaka.colors").setup()
+      require("incline").setup({
+        highlight = {
+          groups = {
+            InclineNormal = { guibg = colors.magenta500, guifg = colors.base04 },
+            InclineNormalNC = { guifg = colors.violet500, guibg = colors.base03 },
+          },
+        },
+        window = { margin = { vertical = 0, horizontal = 1 } },
+        render = function(props)
+          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+          if vim.bo[props.buf].modified then
+            filename = "[+] " .. filename
+          end
+
+          local icon, color = require("nvim-web-devicons").get_icon_color(filename)
+          return { { icon, guifg = color }, { " " }, { filename } }
+        end,
+      })
+    end,
+  },
 }

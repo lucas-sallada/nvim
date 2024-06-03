@@ -14,9 +14,6 @@ vim.o.hlsearch = false
 vim.wo.number = true
 vim.wo.relativenumber = true
 
--- Enable mouse mode
-vim.o.mouse = 'a'
-
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -51,7 +48,7 @@ vim.opt.swapfile = false
 
 vim.o.wrap = false
 
-vim.cmd.colorscheme "catppuccin-frappe"
+vim.cmd.colorscheme "solarized-osaka"
 
 vim.o.colorcolumn = "80"
 

@@ -9,6 +9,29 @@ require('telescope').setup {
       },
     },
   },
+  pickers = {
+    lsp_references = {
+      layout_config = {
+        vertical = {
+          results_width = 1,
+        }
+      },
+      layout_strategy = 'vertical',
+      path_display = { 'smart' },
+      show_line = false,
+    },
+    live_grep = {
+      layout_config = {
+        vertical = {
+          results_width = 1,
+        }
+      },
+      layout_strategy = 'vertical',
+      path_display = { 'smart' },
+      show_line = false,
+    }
+
+  }
 }
 
 -- Enable telescope fzf native, if installed

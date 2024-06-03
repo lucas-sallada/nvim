@@ -27,7 +27,6 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -129,6 +128,7 @@ local cmd = {
 lspconfig.angularls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
+    filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "angular", "angular.html" },
     root_dir = lspconfig.util.root_pattern("angular.json", "project.json"),
     cmd = cmd,
     on_new_config = function(new_config, new_root_dir)
